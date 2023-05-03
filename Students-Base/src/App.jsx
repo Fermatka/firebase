@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { db } from "./api/firebase";
-import { collection, onSnapshot, addDoc } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  addDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 
 console.log(db);
 export const App = () => {
@@ -30,6 +36,10 @@ export const App = () => {
 
   const handleSubmit = (event) => {
     addDoc(studentsCollection, getFormData(event));
+  };
+  const handleDelete = (id) => {
+    const docRef = doc(db, "Students", id);
+    deleteDoc(docRef);
   };
 
   useEffect(() => {
@@ -69,6 +79,9 @@ export const App = () => {
               <p>Nazwisko: {lastName}</p>
               <p>Wiek: {age}</p>
               <p>Rok studiów: {yearOfStudies}</p>
+              <button onClick={() => handleDelete(id)}>
+                Usuń studenta z listy
+              </button>
             </>
           </li>
         ))}
